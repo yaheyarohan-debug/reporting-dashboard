@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Repeat Call Intelligence – FairFirst</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{--bg:#0B1620;color-scheme:dark;--card:#14212E;--ink:#E6EEF4;--mut:#9FB0BF;--line:#25384A;--th:#1B2D3D;--acc:#2FC4BE;--h1:#17414A;--h2:#1F5C66;--h3:#2B8A92;--tt:#1B2D3D;--err:#FF8A80;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',Segoe UI,sans-serif}
+.w{max-width:1200px;margin:0 auto;padding:40px 20px 56px}
+h1{font-size:30px;margin:0 0 6px}h2{font-size:19px;margin:40px 0 12px}
+.sub{color:var(--mut);margin:0;font-size:15px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:10px}
+#drop{margin-top:24px;border:2px dashed var(--acc);border-radius:10px;padding:34px 20px;text-align:center;background:var(--card)}
+#drop.on{background:var(--h1)}
+#drop b{font-size:17px}#drop p{margin:6px 0 16px;color:var(--mut);font-size:14px}
+button,.btn{font:inherit;background:var(--acc);color:#fff;border:0;border-radius:8px;padding:11px 18px;min-height:44px;cursor:pointer;font-weight:600}
+button.s{background:transparent;color:var(--acc);border:1px solid var(--acc)}
+.set{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:16px;padding:18px}
+label{display:block;font-size:13px;color:var(--mut);margin-bottom:5px}
+input[type=number],textarea{width:100%;box-sizing:border-box;font:inherit;padding:9px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.ck{display:flex;gap:8px;align-items:center;margin:8px 0;font-size:14px;color:var(--ink)}
+#msg{margin-top:12px;font-size:14px;color:var(--mut)}#msg.e{color:var(--err)}
+.k{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:8px}
+.kc{padding:16px 18px}.kc b{display:block;font-size:30px;color:var(--acc)}.kc span{font-size:13px;color:var(--mut)}
+.sc{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:8px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{background:var(--th);font-size:13px}td:first-child,th:first-child{text-align:left}
+.tt td{font-weight:700;background:var(--tt)}
+td i{display:block;height:9px;background:var(--acc);border-radius:2px}
+.h0{color:var(--mut)}.h1{background:var(--h1)}.h2{background:var(--h2)}.h3{background:var(--h3);color:#fff}.h4{background:var(--acc);color:#fff;font-weight:600}
+details{margin-bottom:10px}summary{cursor:pointer;padding:12px 16px;font-weight:600;min-height:20px}
+td.ag{white-space:normal;text-align:left;color:var(--mut)}
+td.m{font-family:'IBM Plex Mono',monospace}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+#out{display:none}.dl{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:4px 16px;margin-top:10px}.dl label{display:flex;gap:8px;align-items:center;color:var(--ink);margin:0;font-size:14px}.wr th{white-space:normal;min-width:100px}.hd{background:linear-gradient(135deg,#0B4F5C,#127C8A 60%,#1FA3A0);color:#fff;border-radius:16px;padding:28px 30px;box-shadow:0 8px 24px rgba(11,79,92,.25)}.hd h1{margin:0 0 8px;font-size:32px;letter-spacing:.2px}.hd .sub{color:#D7F0F0}.box{box-shadow:0 2px 12px rgba(0,0,0,.35);border:1px solid var(--line)}.kc{border-left:4px solid #1FA3A0}.kc b{font-size:32px}button{background:linear-gradient(135deg,#127C8A,#0F5F63);box-shadow:0 2px 6px rgba(15,95,99,.25)}button.s{background:transparent;box-shadow:none}.tabs button{border-radius:999px;background:var(--card);padding:8px 16px}.tabs button.on{background:linear-gradient(135deg,#127C8A,#0F5F63);color:#fff}th{background:var(--th);color:#CFE6EC}.h4{color:#04202A}.ht i,td i{background:linear-gradient(90deg,#127C8A,#1FA3A0)}.vc i{background:linear-gradient(180deg,#1FA3A0,#127C8A)}.dg h3{color:#CFE6EC}h2{color:#CFE6EC;border-left:4px solid #1FA3A0;padding-left:10px}body{background:radial-gradient(1100px 520px at 90% -8%,rgba(124,82,209,.22),transparent 60%),radial-gradient(900px 520px at -8% 8%,rgba(34,211,238,.16),transparent 60%),#0B1620;background-attachment:fixed}.hd{background:linear-gradient(120deg,#3B2A8F 0%,#0E7490 52%,#10B981 100%);box-shadow:0 10px 30px rgba(59,42,143,.35)}.hd h1{text-shadow:0 2px 8px rgba(0,0,0,.25)}.k .kc{border-left-width:5px;border-left-style:solid;background:linear-gradient(135deg,var(--card),#182A3A)}.k .kc:nth-child(5n+1){border-left-color:#22D3EE}.k .kc:nth-child(5n+1) b{color:#22D3EE}.k .kc:nth-child(5n+2){border-left-color:#FBBF24}.k .kc:nth-child(5n+2) b{color:#FBBF24}.k .kc:nth-child(5n+3){border-left-color:#34D399}.k .kc:nth-child(5n+3) b{color:#34D399}.k .kc:nth-child(5n+4){border-left-color:#A78BFA}.k .kc:nth-child(5n+4) b{color:#A78BFA}.k .kc:nth-child(5n+5){border-left-color:#FB7185}.k .kc:nth-child(5n+5) b{color:#FB7185}
+.tabs button:nth-child(6n+1){border-color:#22D3EE;color:#22D3EE}.tabs button:nth-child(6n+1).on{background:linear-gradient(135deg,#0891B2,#22D3EE);color:#04202A}.tabs button:nth-child(6n+2){border-color:#FBBF24;color:#FBBF24}.tabs button:nth-child(6n+2).on{background:linear-gradient(135deg,#D97706,#FBBF24);color:#2A1700}.tabs button:nth-child(6n+3){border-color:#34D399;color:#34D399}.tabs button:nth-child(6n+3).on{background:linear-gradient(135deg,#059669,#34D399);color:#04201A}.tabs button:nth-child(6n+4){border-color:#A78BFA;color:#A78BFA}.tabs button:nth-child(6n+4).on{background:linear-gradient(135deg,#7C3AED,#A78BFA);color:#fff}.tabs button:nth-child(6n+5){border-color:#FB7185;color:#FB7185}.tabs button:nth-child(6n+5).on{background:linear-gradient(135deg,#E11D48,#FB7185);color:#fff}.tabs button:nth-child(6n+6){border-color:#60A5FA;color:#60A5FA}.tabs button:nth-child(6n+6).on{background:linear-gradient(135deg,#2563EB,#60A5FA);color:#fff}
+.pg:nth-of-type(6n+1) h2{border-left-color:#22D3EE}.pg:nth-of-type(6n+2) h2{border-left-color:#FBBF24}.pg:nth-of-type(6n+3) h2{border-left-color:#34D399}.pg:nth-of-type(6n+4) h2{border-left-color:#A78BFA}.pg:nth-of-type(6n+5) h2{border-left-color:#FB7185}.pg:nth-of-type(6n+6) h2{border-left-color:#60A5FA}
+.dg .cc{border-top:3px solid #22D3EE}.dg .cc:nth-child(1) .vc i{background:linear-gradient(180deg,#67E8F9,#0891B2)}.dg .cc:nth-child(2){border-top-color:#FBBF24}.dg .cc:nth-child(2) .vc i{background:linear-gradient(180deg,#FDE68A,#D97706)}.dg .cc:nth-child(3){border-top-color:#A78BFA}.dg .cc:nth-child(3) .ht i{background:linear-gradient(90deg,#7C3AED,#C4B5FD)}.dg .cc:nth-child(4){border-top-color:#FB7185}.dg .cc:nth-child(4) .ht i{background:linear-gradient(90deg,#E11D48,#FDA4AF)}.dg .cc:nth-child(5){border-top-color:#34D399}.dg .cc:nth-child(5) .ht i{background:linear-gradient(90deg,#059669,#6EE7B7)}.dg .cc:nth-child(6){border-top-color:#60A5FA}.dg .cc:nth-child(6) .vc i{background:linear-gradient(180deg,#93C5FD,#2563EB)}.dg h3{color:#E0F2FE}
+th{background:linear-gradient(180deg,#26405A,#1B2D3D);color:#E0F2FE}tr:nth-child(even) td:not([class]){background:rgba(255,255,255,.03)}.h1{background:#17405f}.h2{background:#1f6d9a}.h3{background:#7a52d1;color:#fff}.h4{background:#e0457b;color:#fff}.ok{color:#4ADE80;font-weight:600}.mid{color:#FBBF24;font-weight:600}.low{color:#FB7185;font-weight:600}
+#drop{border-color:#22D3EE;background:linear-gradient(135deg,#102333,#14212E)}#drop b{color:#22D3EE}button{background:linear-gradient(135deg,#7C3AED,#0891B2)}.tabs button{background:var(--card)}
+input[type=date]{box-sizing:border-box;font:inherit;padding:9px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+:root{--bg:#0A1730;--card:#102441;--line:#23406B;--th:#16315A;--mut:#9FB3CE;--acc:#14B8A6;--h1:#1E4D7B;--h2:#B7791F;--h3:#D97706;--tt:#16315A}
+body{background:radial-gradient(900px 420px at 88% -10%,rgba(20,184,166,.10),transparent 60%),#0A1730}
+.hd{background:linear-gradient(120deg,#0A1F3C 0%,#12315E 60%,#17407A 100%);border:1px solid #23406B;border-bottom:3px solid #14B8A6;border-radius:14px;padding:22px 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.hd h1{font-size:26px;letter-spacing:2px;margin:0;font-weight:700;text-shadow:none}.tg{margin:4px 0 0;color:#9FB3CE;font-size:14px;letter-spacing:.5px}.hb{display:flex;align-items:center;gap:16px}.lg{width:56px;height:56px;flex:none}.rp{text-align:right;border-left:1px solid #2E4F80;padding-left:20px}.rp span{display:block;font-size:11px;letter-spacing:2px;color:#2DD4BF}.rp b{font-size:16px;letter-spacing:1px}
+.k .kc:nth-child(n){border-left-color:#14B8A6;background:var(--card)}.k .kc:nth-child(n) b{color:#fff}
+.tabs button:nth-child(n){border-color:#3A5A8C;color:#B9CBE6;background:var(--card)}.tabs button:nth-child(n).on{background:#14B8A6;border-color:#14B8A6;color:#052B36}
+.pg:nth-of-type(n) h2{border-left-color:#14B8A6}
+.dg .cc:nth-child(n){border-top-color:#14B8A6}.dg .cc:nth-child(1) .vc i,.dg .cc:nth-child(6) .vc i{background:linear-gradient(180deg,#2DD4BF,#0F766E)}.dg .cc:nth-child(3) .ht i{background:linear-gradient(90deg,#0F766E,#2DD4BF)}.dg .cc:nth-child(2){border-top-color:#F59E0B}.dg .cc:nth-child(2) .vc i{background:linear-gradient(180deg,#FBBF24,#B45309)}.dg .cc:nth-child(4){border-top-color:#F59E0B}.dg .cc:nth-child(4) .ht i{background:linear-gradient(90deg,#B45309,#FBBF24)}.dg .cc:nth-child(5){border-top-color:#EF4444}.dg .cc:nth-child(5) .ht i{background:linear-gradient(90deg,#B91C1C,#F87171)}
+th{background:#16315A;color:#DCE8F8}.h1{background:#1E4D7B;color:#E8EEF7}.h2{background:#B7791F;color:#fff}.h3{background:#D97706;color:#fff}.h4{background:#DC2626;color:#fff}.ok{color:#2DD4BF}.mid{color:#F59E0B}.low{color:#EF4444}
+#drop{border-color:#14B8A6;background:linear-gradient(135deg,#0E2342,#102441)}#drop b{color:#2DD4BF}button{background:linear-gradient(135deg,#14B8A6,#0E9488);color:#041F2A;box-shadow:0 2px 6px rgba(0,0,0,.3)}button.s{background:transparent;color:#2DD4BF;border:1px solid #14B8A6;box-shadow:none}.tabs button{border-radius:8px}
+.w{max-width:1360px}.shell{display:grid;grid-template-columns:250px minmax(0,1fr);gap:22px;margin-top:18px;align-items:start}.main{min-width:0}.nav{position:sticky;top:calc(12px + env(safe-area-inset-top,0px));background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 10px;display:flex;flex-direction:column;gap:2px;box-shadow:0 4px 16px rgba(0,0,0,.3)}.ng{font-size:11px;letter-spacing:1.6px;color:#2DD4BF;padding:14px 12px 6px;font-weight:600}.ng:first-child{padding-top:4px}.nb{background:transparent;color:#C9D8EE;text-align:left;border:0;border-left:3px solid transparent;border-radius:6px;padding:10px 12px;min-height:40px;font-weight:500;box-shadow:none;font-size:14px}.nb:hover{background:#16315A}.nb.on{background:#16315A;border-left-color:#14B8A6;color:#fff;font-weight:600}@media(max-width:860px){.shell{grid-template-columns:1fr}.nav{position:static;flex-direction:row;flex-wrap:wrap;gap:6px}.ng{width:100%;padding:8px 6px 2px}.nb{border:1px solid #3A5A8C;border-radius:8px}.nb.on{border-color:#14B8A6}}
+html{scroll-padding-top:calc(var(--topH,0px) + 8px)}
+.top{position:sticky;top:0;z-index:30;background:#0A1730;margin:0 -20px;padding:12px 20px 10px;box-shadow:0 10px 16px -10px rgba(0,0,0,.7);border-bottom:1px solid #23406B}.top .hd{padding:12px 20px;border-radius:12px}.top .hd h1{font-size:20px;letter-spacing:1.6px}.top .tg{font-size:12px;margin:2px 0 0}.top .lg{width:40px;height:40px}.top .rp b{font-size:14px}.top .rp{padding-left:16px}
+.tb{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;align-items:center}.tb button{min-height:38px;padding:8px 14px}#ctl{max-height:46vh;overflow-y:auto;padding-right:4px}#ctl.c{display:none}
+.nav{top:calc(var(--topH,0px) + 12px);max-height:calc(100vh - var(--topH,0px) - 24px);overflow-y:auto}.ng,.ng:first-child{display:flex;justify-content:space-between;align-items:center;width:100%;background:transparent;border:0;border-radius:6px;color:#2DD4BF;padding:12px;min-height:40px;font-size:12px;letter-spacing:1.6px;font-weight:700;text-align:left;box-shadow:none}.ng:hover{background:#16315A}.ng.open{background:#0E2342}.ng i{font-style:normal;font-size:16px;transition:transform .2s}.ng.open i{transform:rotate(90deg)}.sub{display:none;flex-direction:column;gap:2px;padding:2px 0 8px 8px}.sub.open{display:flex}@media(max-width:860px){.sub.open{flex-direction:row;flex-wrap:wrap}}
+#out{display:block!important}#out.nd .pg{display:none!important}#empty{display:none}#out.nd #empty{display:block}
+.chip{margin-left:auto;padding:6px 14px;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.5px;border:1px solid #3A5A8C;color:#B9CBE6}.chip.ad{border-color:#14B8A6;color:#2DD4BF}
+.wm{position:fixed;right:14px;bottom:calc(10px + env(safe-area-inset-bottom,0px));font:600 13px 'IBM Plex Mono',monospace;color:#7FE0DB;opacity:.45;letter-spacing:1px;pointer-events:none;z-index:5}.dg{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;margin-top:16px}.cc{padding:16px 18px}.cc h3{font-size:15px;margin:0 0 12px}.hr{display:grid;grid-template-columns:minmax(90px,38%) 1fr auto;gap:8px;align-items:center;margin:7px 0;font-size:13px}.hl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ht{background:var(--th);border-radius:3px;height:12px}.ht i{display:block;height:12px;background:var(--acc);border-radius:3px}.vb{display:flex;gap:6px;align-items:flex-end;height:230px;overflow-x:auto}.vc{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-width:42px;flex:1;font-size:11px}.vc i{display:block;width:70%;background:var(--acc);border-radius:3px 3px 0 0}.vc b{font-size:11px;margin-bottom:3px}.vc span{margin-top:5px;color:var(--mut)}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:8px 0;z-index:2}.tabs button{background:transparent;color:var(--acc);border:1px solid var(--acc);padding:8px 14px;min-height:40px}.tabs button.on{background:var(--acc);color:#fff}.pg{display:none}.pg.on{display:block}.pg h2:first-child{margin-top:16px}select{width:100%;box-sizing:border-box;font:inherit;padding:9px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}.cd{padding:14px 16px}.cd h3{font:500 14px 'IBM Plex Mono',monospace;margin:0 0 8px}.cd div{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line);font-family:'IBM Plex Mono',monospace;font-size:14px}.cd div:last-child{border:0}
+</style></head><body><div class="w"><div class="top" id="top">
+<div class="hd"><div class="hb"><svg class="lg" viewBox="0 0 48 48" aria-label="Logo"><rect width="48" height="48" rx="12" fill="#071A33" stroke="#2DD4BF" stroke-width="1.5"/><path d="M14.5 21A10 10 0 0 1 31.5 16.5" fill="none" stroke="#2DD4BF" stroke-width="3" stroke-linecap="round"/><path d="M32 11.5V17h-5.5" fill="none" stroke="#2DD4BF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M33.5 27A10 10 0 0 1 16.5 31.5" fill="none" stroke="#2DD4BF" stroke-width="3" stroke-linecap="round"/><path d="M16 36.5V31h5.5" fill="none" stroke="#2DD4BF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="24" r="3.5" fill="#F59E0B"/></svg><div><h1>REPEAT CALL INTELLIGENCE</h1><p class="tg">Customer Experience &amp; Performance Analytics</p></div></div><div class="rp"><span>REPORTING PERIOD</span><b>Daily · Weekly · Monthly</b></div></div>
+
+<div class="tb"><button class="s" id="ctog">Hide data &amp; settings</button><button id="xl">Export all to Excel</button><span id="role" class="chip"></span></div>
+<div id="ctl"><p id="dg" class="sub" style="margin:12px 0 0;font-size:12px"></p>
+<div id="vw" class="box" style="margin-top:20px;padding:14px 18px;display:none"></div>
+<div id="drop" style="display:none"><b>Admin: drop Session Report files here</b><p>You can add several days' files together</p>
+<input id="f" type="file" accept=".xlsx,.xls,.csv" multiple hidden>
+<button id="pick">Choose files</button> <button id="clr" class="s">Clear</button></div>
+<div id="msg"></div><div id="admp" class="box" style="display:none;margin-top:12px;padding:14px 18px"><button id="sv" style="display:none">Save to system</button> <button id="lc" class="s" style="display:none">Analyse on this device only</button> <select id="dsel" style="width:auto;display:inline-block;min-width:200px"></select> <button id="ddel" class="s">Delete this date</button></div>
+<div class="box set">
+<div><label for="thr">Repeat = calls from same number per day (minimum)</label><input id="thr" type="number" min="2" value="3"></div>
+<div><label for="dfrom">Date range (calendar) – from / to</label><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="dfrom" type="date" style="flex:1;min-width:140px"><input id="dto" type="date" style="flex:1;min-width:140px"></div><button class="s" id="dcl" style="margin-top:8px">Clear dates</button></div>
+<div><label for="ex">Numbers to exclude (space or comma separated)</label><textarea id="ex" rows="3">0112428000 0728811217</textarea></div>
+<div><label>Call directions to include (tick one or more)</label><div id="dirs"></div>
+<div class="ck"><input id="short" type="checkbox" checked><label for="short" style="margin:0;color:inherit">Exclude short extensions (not 10 digits)</label></div>
+<button id="go" style="margin-top:6px">Analyse</button></div>
+</div>
+</div></div>
+<div id="out">
+
+<div class="shell"><nav class="nav" id="tabs"></nav><div class="main"><div id="empty" class="box" style="padding:28px;text-align:center"><b style="font-size:18px">No data loaded yet</b><p class="sub" style="margin-top:8px">Upload a Session Report (admin) or wait for the admin to save data to the system. Your reports will appear here.</p></div><section class="pg" data-t="Dashboard"><h2>Repeat calls dashboard</h2><div class="k" id="db0"></div>
+<div class="dg"><div class="box cc"><h3>Repeat calls per day</h3><div id="db1"></div></div><div class="box cc"><h3>Repeat % per day</h3><div id="db2"></div></div><div class="box cc"><h3>Top 10 agents – repeat calls handled</h3><div id="db3"></div></div><div class="box cc"><h3>Top dispositions – repeat calls (repeat rate)</h3><div id="db4"></div></div><div class="box cc"><h3>Top 10 repeat numbers</h3><div id="db5"></div></div><div class="box cc"><h3>How many times repeat numbers called (per day)</h3><div id="db6"></div></div></div></section><section class="pg" data-t="Summary"><h2>Summary</h2><p class="sub" id="sx"></p><div class="k" id="kp"></div>
+</section><section class="pg" data-t="Date wise"><h2>Date wise</h2><div class="box sc" id="dt"></div>
+</section><section class="pg" data-t="Agent wise"><h2>Agent wise – repeat calls handled per date</h2><div class="box sc" id="ag"></div>
+</section><section class="pg" data-t="Number wise"><h2>Number wise – top 5 repeat numbers each date</h2><div class="g" id="t5"></div>
+<h2>Most frequent repeat numbers (all dates)</h2><div class="box sc" id="mf"></div>
+</section><section class="pg" data-t="Disposition wise"><h2>Disposition wise – which dispositions the repeat calls fall under</h2><div class="box sc" id="dp"></div>
+</section><section class="pg" data-t="FCR"><h2>FCR % – First Call Resolution</h2>
+<p class="sub">FCR % = share of calls that did NOT come from a repeat number. A repeat number is a number that called the minimum number of times (the Repeat setting, default 3) within the same day, week, month or 3-day cycle (Cycle 1 = days 1–3, Cycle 2 = days 4–6 ... Cycle 10 = day 28 to month end). Higher is better. Uses the same call filters as the other tabs.</p>
+<div class="box set"><div><label for="fp">Period</label><select id="fp"><option value="d">Daily</option><option value="w">Weekly (Mon–Sun)</option><option value="m">Monthly</option><option value="t">3-Day Cycle</option></select></div><div><label for="fv">Show in agent table</label><select id="fv"><option value="f">FCR %</option><option value="c">Total calls</option><option value="r">Repeat calls</option></select></div><div><label for="fcf">Date (calendar) – from / to</label><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="fcf" type="date" style="flex:1;min-width:130px"><input id="fct" type="date" style="flex:1;min-width:130px"></div></div></div>
+<div class="bar"><button id="xf">Export FCR report (Excel)</button></div>
+<p class="sub" id="cpm" style="margin-top:8px"></p>
+<div class="k" id="fk" style="margin-top:14px"></div>
+<h2>Total FCR</h2><div class="box sc" id="ft"></div>
+<h2>Agent wise FCR</h2><div class="box sc wr" id="fa2"></div>
+<p class="sub" style="margin-top:12px">A week or month with only some days uploaded is a partial period. Agent FCR = share of the calls that agent answered which were not from repeat numbers.</p>
+</section><section class="pg" data-t="All imported calls"><h2>All imported calls – date / agent / disposition wise</h2>
+<p class="sub">Counts every row you uploaded (not only repeat calls). No exclusions are applied here.</p>
+<div class="k" id="c0" style="margin-top:14px"></div>
+<div class="box set" style="margin-top:14px"><div><label for="cdr">Direction</label><select id="cdr"></select></div></div>
+<div class="box set" style="margin-top:14px"><div><label for="cdf">Date (calendar) – from / to</label><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="cdf" type="date" style="flex:1;min-width:130px"><input id="cdt" type="date" style="flex:1;min-width:130px"></div></div></div>
+<details class="box" style="margin-top:10px"><summary>Dispositions – tick one or more (none ticked = all)</summary><div style="padding:0 16px 14px"><button class="s ca" data-t="cql" data-v="1">Select all</button> <button class="s ca" data-t="cql" data-v="0">Clear</button><div id="cql" class="dl"></div></div></details>
+<details class="box" style="margin-top:10px"><summary>Agents – tick one or more (none ticked = all)</summary><div style="padding:0 16px 14px"><button class="s ca" data-t="cal" data-v="1">Select all</button> <button class="s ca" data-t="cal" data-v="0">Clear</button><div id="cal" class="dl"></div></div></details>
+<div class="k" id="c1" style="margin-top:14px"></div>
+<h2>Agent wise – calls per date</h2><div class="box sc" id="c2"></div>
+<h2>Disposition wise – calls per date</h2><div class="box sc wr" id="c3"></div>
+<h2>Agent × disposition</h2><div class="box sc wr" id="c4"></div>
+</section><section class="pg" data-t="Agent calls"><h2>Agent wise calls per day by disposition</h2>
+<div class="box set"><div><label for="adf">Date (calendar) – from / to</label><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="adf" type="date" style="flex:1;min-width:130px"><input id="adt" type="date" style="flex:1;min-width:130px"></div></div><div><label for="aa">Agent</label><select id="aa"></select></div><div><label for="as">Calls to count</label><select id="as"><option value="all">All calls</option><option value="rep">Repeat calls only</option></select></div></div>
+<details class="box" style="margin-top:14px"><summary>Dispositions – tick one or more (none ticked = all)</summary><div style="padding:0 16px 14px"><input id="dqs" type="text" placeholder="Search disposition..." style="width:100%;box-sizing:border-box;font:inherit;padding:9px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);margin-bottom:8px"><button class="s" id="dall">Select all</button> <button class="s" id="dclr">Clear</button><div id="dl" class="dl"></div></div></details>
+<div class="k" id="as2" style="margin-top:14px"></div>
+<h2>Agent wise – calls per date</h2><div class="box sc" id="t1"></div>
+<h2>Disposition wise – daily count</h2><div class="box sc wr" id="t2"></div>
+<h2>Agent × disposition</h2><div class="box sc wr" id="t3"></div>
+</section><section class="pg" data-t="Filter"><h2>Filter – Disposition wise / Agent wise repeat numbers</h2>
+<div class="box set"><div><label for="ffd">Date (calendar) – from / to</label><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="ffd" type="date" style="flex:1;min-width:130px"><input id="ftd" type="date" style="flex:1;min-width:130px"></div></div><div style="grid-column:1/-1"><label for="fqs">Disposition – tick one or more (none ticked = all)</label><input id="fqs" type="text" placeholder="Search disposition..." style="width:100%;box-sizing:border-box;font:inherit;padding:9px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)"><div style="margin-top:8px"><button class="s ca" data-t="fql" data-v="1">Select all</button> <button class="s ca" data-t="fql" data-v="0">Clear</button></div><div id="fql" class="dl" style="max-height:260px;overflow-y:auto"></div></div><div><label for="fa">Agent</label><select id="fa"></select></div></div>
+<div class="k" id="fs" style="margin-top:14px"></div><div class="box sc" id="fr" style="margin-top:14px"></div>
+</section><section class="pg" data-t="All numbers"><h2>Number wise – all repeat numbers per date</h2><div id="nm"></div></section></div></div>
+</div></div>
+<div class="wm">RohanY</div>
+<script>
+const $=id=>document.getElementById(id);
+let rows=[],names=[],res=null,DB=null,ADMIN=false,PEND=[],DATES=[];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=iso=>iso.slice(8,10)+'.'+iso.slice(5,7)+'.'+iso.slice(0,4);
+const p2=n=>String(n).padStart(2,'0');
+function pd(v){
+  if(v instanceof Date)return v.getFullYear()+'-'+p2(v.getMonth()+1)+'-'+p2(v.getDate());
+  if(typeof v==='number'){const o=XLSX.SSF.parse_date_code(v);return o?o.y+'-'+p2(o.m)+'-'+p2(o.d):null}
+  const m=/^\s*(\d{1,2})\/(\d{1,2})\/(\d{4})/.exec(String(v||''));
+  return m?m[3]+'-'+p2(m[1])+'-'+p2(m[2]):null;
+}
+function nn(v){
+  if(v==null||v==='')return null;
+  let s=typeof v==='number'?String(Math.round(v)):String(v).replace(/\D/g,'');
+  if(!s)return null; if(s.length===9)s='0'+s; return s;
+}
+async function saveAll(){
+  if(!DB||!PEND.length)return;
+  const by={};PEND.forEach(r=>(by[r.d]||(by[r.d]=[])).push(r));
+  const ds=Object.keys(by).sort();let ok=0;$('sv').disabled=true;
+  for(const d of ds){
+    const L=by[d],ag=[...new Set(L.map(r=>r.ag))],dp=[...new Set(L.map(r=>r.dp))],dr=[...new Set(L.map(r=>r.dir||'(blank)'))];
+    const s=L.map(r=>ag.indexOf(r.ag)+','+dp.indexOf(r.dp)+','+dr.indexOf(r.dir||'(blank)')+','+(r.num||'')).join('\n');
+    try{await DB.doc('calls/'+d).set({d,ag,dp,dr,s,n:L.length,upd:new Date().toISOString()});ok++;msg('Saving '+ok+' of '+ds.length+' dates...')}
+    catch(e){msg('Could not save '+fmt(d)+' ('+((e&&e.code)||'error')+')'+(e&&e.code==='invalid_argument'?' - only admins (Owner or Editor) can save data':'')+'. Stopped.',1);$('sv').disabled=false;return}
+  }
+  PEND=[];names=[];$('sv').style.display='none';$('sv').disabled=false;msg('Saved '+ok+' date(s) to the system.');
+}
+function fromSnap(snap){
+  const out=[];let upd='';
+  snap.docs.forEach(x=>{const o=x.data();if(!o||typeof o.s!=='string')return;if(o.upd>upd)upd=o.upd;
+    o.s.split('\n').forEach(line=>{if(!line)return;const p=line.split(',');const dr=o.dr[+p[2]];out.push({d:o.d,ag:o.ag[+p[0]]||'Unknown',dp:o.dp[+p[1]]||'No Disposition',dir:dr==='(blank)'?'':dr,num:p[3]||null})})});
+  rows=out;DATES=[...new Set(out.map(r=>r.d))].sort();
+  const vw=$('vw');vw.style.display='block';
+  vw.textContent=DATES.length?('Data in system: '+DATES.length+' date(s), '+fmt(DATES[0])+' to '+fmt(DATES[DATES.length-1])+' \u00b7 '+rows.length.toLocaleString()+' rows \u00b7 last updated '+new Date(upd).toLocaleString()):'No data in the system yet.';
+  if(ADMIN)fill('dsel',DATES.map(d=>[d,fmt(d)]),'Select a date to delete');
+  if(rows.length)run();else{res=null;$('out').style.display='none'}
+}
+function dirSel(){return new Set([...document.querySelectorAll('#dirs input:checked')].map(i=>i.value))}
+function syncDirs(){
+  const cnt={};rows.forEach(r=>{const k=r.dir||'(blank)';cnt[k]=(cnt[k]||0)+1});
+  const ks=Object.keys(cnt).sort((a,b)=>a==='Inbound'?-1:b==='Inbound'?1:cnt[b]-cnt[a]),box=$('dirs'),had=new Set([...box.querySelectorAll('input')].map(i=>i.value)),cur=dirSel();
+  box.innerHTML=ks.map(k=>'<label class="ck" style="margin:4px 0"><input type="checkbox" value="'+esc(k)+'"'+((had.has(k)?cur.has(k):k==='Inbound')?' checked':'')+'> '+esc(k)+' ('+cnt[k].toLocaleString()+')</label>').join('');
+}
+function msg(t,e){$('msg').textContent=t;$('msg').className=e?'e':''}
+async function load(files){
+  for(const f of files){
+    try{
+      const wb=XLSX.read(await f.arrayBuffer(),{type:'array',cellDates:true});
+      const js=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{raw:true,defval:null});
+      if(!js.length||!('Initiated At' in js[0])||!('Phone Number' in js[0])||!('Agents' in js[0])){msg(f.name+': columns Initiated At / Phone Number / Agents not found.',1);continue}
+      let n=0;
+      for(const r of js){const d=pd(r['Initiated At']);if(!d)continue;(DB?PEND:rows).push({d,num:nn(r['Phone Number']),ag:r['Agents']||'Unknown',dp:r['Disposition']||'No Disposition',dir:r['Direction']||''});n++}
+      names.push(f.name+' ('+n.toLocaleString()+' rows)');
+    }catch(e){msg(f.name+': could not read this file.',1)}
+  }
+  if(names.length){if(DB){msg('Ready to save: '+names.join(', ')+'. Saving replaces the stored data for the dates in these files.');$('sv').style.display='inline-block';$('lc').style.display='inline-block'}else{msg('Loaded: '+names.join(', '));run()}}
+}
+function inR(r){const f=$('dfrom').value,t=$('dto').value;return (!f||r.d>=f)&&(!t||r.d<=t)}
+function run(){
+  const all=rows;
+  if(all.length){let lo='9',hi='';all.forEach(r=>{if(r.d<lo)lo=r.d;if(r.d>hi)hi=r.d});$('dfrom').min=$('dto').min=lo;$('dfrom').max=$('dto').max=hi}
+  rows=all.filter(inR);
+  try{if(!rows.length&&all.length){msg('No calls in the selected dates.',1);$('out').style.display='none';return}run0()}finally{rows=all}
+}
+function run0(){
+  if(!rows.length){msg('Upload a file first.',1);return}syncDirs();
+  const T=Math.max(2,+$('thr').value||3),ex=new Set($('ex').value.split(/[\s,;]+/).filter(Boolean));
+  const dsel=dirSel(),sh=$('short').checked,by={},dt={};
+  for(const r of rows){
+    if(!dsel.has(r.dir||'(blank)'))continue;
+    if(!r.num||ex.has(r.num)||(sh&&r.num.length!==10))continue;
+    const o=by[r.d]||(by[r.d]={tot:0,nums:{}});o.tot++;
+    const x=o.nums[r.num]||(o.nums[r.num]={n:0,ag:{},dp:{},j:{}});x.n++;x.ag[r.ag]=(x.ag[r.ag]||0)+1;x.dp[r.dp]=(x.dp[r.dp]||0)+1;{const jk=r.ag+'\u0001'+r.dp;x.j[jk]=(x.j[jk]||0)+1}dt[r.dp]=(dt[r.dp]||0)+1;
+  }
+  const dates=Object.keys(by).sort(),agents={},days=[];
+  for(const d of dates){
+    const list=Object.entries(by[d].nums).filter(([k,v])=>v.n>=T).sort((a,b)=>b[1].n-a[1].n);
+    let calls=0;for(const [k,v] of list){calls+=v.n;for(const a in v.ag){(agents[a]||(agents[a]={}))[d]=(agents[a][d]||0)+v.ag[a]}}
+    days.push({d,tot:by[d].tot,nums:list.length,calls,list});
+  }
+  const rs=new Set();days.forEach(x=>x.list.forEach(([k])=>rs.add(x.d+'|'+k)));const ac={},F=[];
+  for(const r of rows){if(!dsel.has(r.dir||'(blank)'))continue;if(!r.num||ex.has(r.num)||(sh&&r.num.length!==10))continue;const k=r.d+'\u0001'+r.ag+'\u0001'+r.dp,o=ac[k]||(ac[k]=[0,0]);o[0]++;F.push([r.d,r.ag,r.num]);if(rs.has(r.d+'|'+r.num))o[1]++}
+  const AC=Object.entries(ac).map(([k,v])=>k.split('\u0001').concat(v));
+  const AC0=0;const RAo={};for(const r of rows){const k=r.d+'\u0001'+r.ag+'\u0001'+r.dp+'\u0001'+(r.dir||'(blank)');RAo[k]=(RAo[k]||0)+1}
+  const RA=Object.entries(RAo).map(([k,v])=>k.split('\u0001').concat(v));
+  res={days,dates,agents,T,dt,AC:AC,RA:RA,F:F};draw();
+}
+function fill(id,prs,first){const el=$(id),cur=el.value;el.innerHTML='<option value="">'+first+'</option>'+prs.map(p=>'<option value="'+esc(p[0])+'">'+esc(p[1])+'</option>').join('');if(prs.some(p=>p[0]===cur))el.value=cur}
+function renderF(){
+  if(!res)return;
+  const fd=$('ffd').value,fe=$('ftd').value,fq=new Set(selC('fql')),fa=$('fa').value,out=[];let calls=0;
+  for(const x of res.days){if((fd&&x.d<fd)||(fe&&x.d>fe))continue;
+    for(const [k,v] of x.list){let m=0;const ag={},dp={};
+      for(const [jk,c] of Object.entries(v.j)){const p=jk.split('\u0001');if((fa&&p[0]!==fa)||(fq.size&&!fq.has(p[1])))continue;m+=c;ag[p[0]]=(ag[p[0]]||0)+c;dp[p[1]]=(dp[p[1]]||0)+c}
+      if(m){out.push([x.d,k,m,v.n,ag,dp]);calls+=m}}}
+  out.sort((a,b)=>a[0]<b[0]?-1:a[0]>b[0]?1:b[2]-a[2]);
+  $('fs').innerHTML=[[calls,'Repeat calls matching the filter'],[out.length,'Repeat numbers (number × day)']].map(a=>'<div class="box kc"><b>'+a[0]+'</b><span>'+a[1]+'</span></div>').join('');
+  $('fr').innerHTML=out.length?'<table><tr><th>Date</th><th>Number</th><th>Matching calls</th><th>Number total that day</th><th>Agents</th><th>Dispositions</th></tr>'+out.map(r=>'<tr><td>'+fmt(r[0])+'</td><td class="m">'+esc(r[1])+'</td><td><b>'+r[2]+'</b></td><td>'+r[3]+'</td><td class="ag">'+esc(agStr(r[4]))+'</td><td class="ag">'+esc(agStr(r[5]))+'</td></tr>').join('')+'</table>':'<p style="padding:16px;margin:0">No repeat calls match this filter.</p>';
+}
+function hs(v,m){return v===0?'h0':v<=m*.25?'h1':v<=m*.5?'h2':v<=m*.75?'h3':'h4'}
+function tbl(first,cols,rs,fm){const mx=Math.max(1,...rs.flatMap(r=>r[1])),cs=cols.map((c,i)=>rs.reduce((s,r)=>s+r[1][i],0));return '<table><tr><th>'+first+'</th>'+cols.map(c=>'<th>'+esc(fm?fm(c):c)+'</th>').join('')+'<th>Total</th></tr>'+rs.map(r=>'<tr><td style="white-space:normal;min-width:180px">'+esc(r[0])+'</td>'+r[1].map(v=>'<td class="'+hs(v,mx)+'">'+v+'</td>').join('')+'<td><b>'+r[1].reduce((a,b)=>a+b,0)+'</b></td></tr>').join('')+'<tr class="tt"><td>Total</td>'+cs.map(v=>'<td>'+v+'</td>').join('')+'<td>'+cs.reduce((a,b)=>a+b,0)+'</td></tr></table>'}
+function selD(){return [...document.querySelectorAll('#dl input:checked')].map(i=>i.value)}
+function buildAD(){
+  const keep=new Set(selD()),dl=[...new Set(res.AC.map(a=>a[2]))].sort();
+  $('dl').innerHTML=dl.map(q=>'<label><input type="checkbox" value="'+esc(q)+'"'+(keep.has(q)?' checked':'')+'> '+esc(q)+'</label>').join('');
+  ['adf','adt'].forEach(id=>{$(id).min=res.dates[0];$(id).max=res.dates[res.dates.length-1]});
+  fill('aa',[...new Set(res.AC.map(a=>a[1]))].sort().map(v=>[v,v]),'All agents');
+  renderAD();
+}
+function renderAD(){
+  if(!res)return;
+  const fd=$('adf').value,fe=$('adt').value,fa=$('aa').value,sc=$('as').value,sel=new Set(selD());
+  const q=res.AC.filter(a=>(!fd||a[0]>=fd)&&(!fe||a[0]<=fe)&&(!fa||a[1]===fa)&&(!sel.size||sel.has(a[2]))).map(a=>[a[0],a[1],a[2],sc==='rep'?a[4]:a[3]]).filter(a=>a[3]>0);
+  if(!q.length){$('as2').innerHTML='';$('t1').innerHTML='<p style="padding:16px;margin:0">No calls match this filter.</p>';$('t2').innerHTML='';$('t3').innerHTML='';return}
+  const ds=[...new Set(q.map(a=>a[0]))].sort(),tot={},ags=new Set();
+  q.forEach(a=>{tot[a[2]]=(tot[a[2]]||0)+a[3];ags.add(a[1])});
+  const dps=Object.keys(tot).sort((a,b)=>tot[b]-tot[a]);
+  const M=(ri,ci,cols)=>{const m={};q.forEach(a=>{const o=m[a[ri]]||(m[a[ri]]={});o[a[ci]]=(o[a[ci]]||0)+a[3]});return Object.entries(m).map(([k,o])=>[k,cols.map(c=>o[c]||0)]).sort((x,y)=>y[1].reduce((s,v)=>s+v,0)-x[1].reduce((s,v)=>s+v,0))};
+  const all=q.reduce((s,a)=>s+a[3],0);
+  $('as2').innerHTML=[[all,sc==='rep'?'Repeat calls matching':'Calls matching'],[ags.size,'Agents'],[dps.length,'Dispositions']].map(a=>'<div class="box kc"><b>'+a[0]+'</b><span>'+a[1]+'</span></div>').join('');
+  $('t1').innerHTML=tbl('Agent',ds,M(1,0,ds),fmt);
+  $('t2').innerHTML=tbl('Disposition',ds,M(2,0,ds),fmt);
+  $('t3').innerHTML=tbl('Agent',dps,M(1,2,dps));
+}
+function selC(id){return [...document.querySelectorAll('#'+id+' input:checked')].map(i=>i.value)}
+function cl(id,vals,fm){const keep=new Set(selC(id));$(id).innerHTML=vals.map(v=>'<label><input type="checkbox" value="'+esc(v)+'"'+(keep.has(v)?' checked':'')+'> '+esc(fm?fm(v):v)+'</label>').join('')}
+function MX(q,ri,ci,vi,cols){const m={};q.forEach(a=>{const o=m[a[ri]]||(m[a[ri]]={});o[a[ci]]=(o[a[ci]]||0)+a[vi]});return Object.entries(m).map(([k,o])=>[k,cols.map(c=>o[c]||0)]).sort((x,y)=>y[1].reduce((s,v)=>s+v,0)-x[1].reduce((s,v)=>s+v,0))}
+function buildC(){
+  const RA=res.RA;
+  {const ds0=[...new Set(RA.map(a=>a[0]))].sort();['cdf','cdt'].forEach(id=>{$(id).min=ds0[0];$(id).max=ds0[ds0.length-1]})}
+  cl('cql',[...new Set(RA.map(a=>a[2]))].sort());
+  cl('cal',[...new Set(RA.map(a=>a[1]))].sort());
+  fill('cdr',[...new Set(RA.map(a=>a[3]))].sort().map(v=>[v,v]),'All directions');
+  renderC();
+}
+function renderC(){
+  if(!res)return;
+  const cf=$('cdf').value,ct=$('cdt').value,sq=new Set(selC('cql')),sa=new Set(selC('cal')),dr=$('cdr').value;
+  const all=res.RA.reduce((s,a)=>s+a[4],0);
+  $('c0').innerHTML='<div class="box kc"><b>'+all.toLocaleString()+'</b><span>Rows imported (all files)</span></div>';
+  const q=res.RA.filter(a=>(!cf||a[0]>=cf)&&(!ct||a[0]<=ct)&&(!sq.size||sq.has(a[2]))&&(!sa.size||sa.has(a[1]))&&(!dr||a[3]===dr));
+  const m=q.reduce((s,a)=>s+a[4],0);
+  if(!m){$('c1').innerHTML='';$('c2').innerHTML='<p style="padding:16px;margin:0">No calls match this filter.</p>';$('c3').innerHTML='';$('c4').innerHTML='';return}
+  const ds=[...new Set(q.map(a=>a[0]))].sort(),tot={},ags=new Set();
+  q.forEach(a=>{tot[a[2]]=(tot[a[2]]||0)+a[4];ags.add(a[1])});
+  const dps=Object.keys(tot).sort((a,b)=>tot[b]-tot[a]);
+  $('c1').innerHTML=[[m.toLocaleString(),'Calls matching the filter'],[ds.length,'Dates'],[ags.size,'Agents'],[dps.length,'Dispositions']].map(a=>'<div class="box kc"><b>'+a[0]+'</b><span>'+a[1]+'</span></div>').join('');
+  $('c2').innerHTML=tbl('Agent',ds,MX(q,1,0,4,ds),fmt);
+  $('c3').innerHTML=tbl('Disposition',ds,MX(q,2,0,4,ds),fmt);
+  $('c4').innerHTML=tbl('Agent',dps,MX(q,1,2,4,dps));
+}
+function pk(d,t){if(t==='d')return d;if(t==='m')return d.slice(0,7);if(t==='t')return d.slice(0,7)+'-C'+p2(Math.min(Math.ceil(+d.slice(8,10)/3),10));const x=new Date(d+'T00:00:00Z'),w=(x.getUTCDay()+6)%7;x.setUTCDate(x.getUTCDate()-w);return x.toISOString().slice(0,10)}
+function pl(k,t){if(t==='t'){const y=+k.slice(0,4),mo=+k.slice(5,7),n=+k.slice(-2),s=(n-1)*3+1,e=n===10?new Date(Date.UTC(y,mo,0)).getUTCDate():n*3;return 'Cycle '+n+' ('+p2(s)+'–'+p2(e)+' '+new Date(Date.UTC(y,mo-1,1)).toLocaleString('en',{month:'short',timeZone:'UTC'})+' '+y+')'}return t==='d'?fmt(k):t==='m'?k.slice(5,7)+'.'+k.slice(0,4):'Week of '+fmt(k)}
+function FR(){const f=$('fcf').value,t=$('fct').value;return res.F.filter(r=>(!f||r[0]>=f)&&(!t||r[0]<=t))}
+function fcrData(t){const T=res.T,cnt={},P={},A={};
+  FR().forEach(r=>{const k=pk(r[0],t)+'|'+r[2];cnt[k]=(cnt[k]||0)+1});
+  FR().forEach(r=>{const p=pk(r[0],t),rep=cnt[p+'|'+r[2]]>=T?1:0,a=P[p]||(P[p]={c:0,r:0});a.c++;a.r+=rep;const g=A[r[1]]||(A[r[1]]={}),h=g[p]||(g[p]={c:0,r:0});h.c++;h.r+=rep});
+  return {ps:Object.keys(P).sort(),P,A}}
+function fsum(g){return Object.values(g).reduce((s,o)=>({c:s.c+o.c,r:s.r+o.r}),{c:0,r:0})}
+function renderFCR(){
+  if(!res)return;
+  const t=$('fp').value,v=$('fv').value,D=fcrData(t),S=fsum(D.P);
+  const pc=o=>!o||!o.c?'–':((o.c-o.r)/o.c*100).toFixed(1)+'%';
+  const val=o=>!o||!o.c?'–':v==='f'?pc(o):v==='c'?o.c:o.r,fcl=o=>v!=='f'||!o||!o.c?'':(o.c-o.r)/o.c>=.8?'ok':(o.c-o.r)/o.c>=.6?'mid':'low';
+  $('fk').innerHTML=[[pc(S),'Overall FCR'],[S.c.toLocaleString(),'Calls'],[S.r.toLocaleString(),'Repeat calls']].map(a=>'<div class="box kc"><b>'+a[0]+'</b><span>'+a[1]+'</span></div>').join('');
+  $('ft').innerHTML='<table><tr><th>Period</th><th>Calls</th><th>Repeat calls</th><th>FCR %</th></tr>'+D.ps.map(p=>'<tr><td>'+pl(p,t)+'</td><td>'+D.P[p].c.toLocaleString()+'</td><td>'+D.P[p].r+'</td><td class="'+(((D.P[p].c-D.P[p].r)/D.P[p].c)>=.8?'ok':((D.P[p].c-D.P[p].r)/D.P[p].c)>=.6?'mid':'low')+'"><b>'+pc(D.P[p])+'</b></td></tr>').join('')+'<tr class="tt"><td>Total</td><td>'+S.c.toLocaleString()+'</td><td>'+S.r+'</td><td>'+pc(S)+'</td></tr></table>';
+  const ags=Object.keys(D.A).sort((a,b)=>fsum(D.A[b]).c-fsum(D.A[a]).c);
+  $('fa2').innerHTML='<table><tr><th>Agent</th>'+D.ps.map(p=>'<th>'+pl(p,t)+'</th>').join('')+'<th>Total</th></tr>'+ags.map(a=>'<tr><td>'+esc(a)+'</td>'+D.ps.map(p=>'<td class="'+fcl(D.A[a][p])+'">'+val(D.A[a][p])+'</td>').join('')+'<td class="'+fcl(fsum(D.A[a]))+'"><b>'+val(fsum(D.A[a]))+'</b></td></tr>').join('')+'<tr class="tt"><td>All agents</td>'+D.ps.map(p=>'<td>'+val(D.P[p])+'</td>').join('')+'<td>'+val(S)+'</td></tr></table>';
+}
+function hb(it,fm){const mx=Math.max(1,...it.map(i=>i[1]));return it.map(i=>'<div class="hr"><span class="hl" title="'+esc(i[0])+'">'+esc(i[0])+'</span><span class="ht"><i style="width:'+(i[1]/mx*100).toFixed(1)+'%"></i></span><b>'+(fm?fm(i):i[1])+'</b></div>').join('')}
+function vb(it,fm){const mx=Math.max(1,...it.map(i=>i[1]));return '<div class="vb">'+it.map(i=>'<div class="vc"><b>'+(fm?fm(i):i[1])+'</b><i style="height:'+(i[1]/mx*160).toFixed(0)+'px"></i><span>'+esc(i[0])+'</span></div>').join('')+'</div>'}
+function renderDash(){
+  if(!res)return;
+  const {days,AC,agents}=res,TI=days.reduce((s,x)=>s+x.tot,0),TC=days.reduce((s,x)=>s+x.calls,0),TN=days.reduce((s,x)=>s+x.nums,0),pk0=days.reduce((a,x)=>x.calls>a.calls?x:a,days[0]);
+  $('db0').innerHTML=[[TC.toLocaleString(),'Repeat calls'],[(TC/TI*100).toFixed(1)+'%','Repeat % of all calls'],[((1-TC/TI)*100).toFixed(1)+'%','FCR % (daily basis)'],[TN,'Repeat numbers (counted per day)'],[pk0.calls,'Peak day: '+fmt(pk0.d)]].map(a=>'<div class="box kc"><b>'+a[0]+'</b><span>'+a[1]+'</span></div>').join('');
+  $('db1').innerHTML=vb(days.map(x=>[fmt(x.d).slice(0,5),x.calls]));
+  $('db2').innerHTML=vb(days.map(x=>[fmt(x.d).slice(0,5),+(x.calls/x.tot*100).toFixed(1)]),i=>i[1]+'%');
+  $('db3').innerHTML=hb(Object.entries(agents).map(([a,o])=>[a,Object.values(o).reduce((s,v)=>s+v,0)]).sort((a,b)=>b[1]-a[1]).slice(0,10));
+  const dr={};AC.forEach(a=>{dr[a[2]]=(dr[a[2]]||0)+a[4]});
+  $('db4').innerHTML=hb(Object.entries(dr).filter(e=>e[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([q,c])=>[q,c,(c/res.dt[q]*100).toFixed(0)]),i=>i[1]+' ('+i[2]+'%)');
+  const fq={},bk={};days.forEach(x=>x.list.forEach(([k,v])=>{fq[k]=(fq[k]||0)+v.n;const b=v.n<=5?String(v.n):v.n<=10?'6–10':'11+';bk[b]=(bk[b]||0)+1}));
+  $('db5').innerHTML=hb(Object.entries(fq).sort((a,b)=>b[1]-a[1]).slice(0,10),i=>i[1]+' calls');
+  $('db6').innerHTML=vb(['2','3','4','5','6–10','11+'].filter(b=>bk[b]).map(b=>[b+' calls',bk[b]]));
+}
+function hc(v){return v===0?'h0':v<=10?'h1':v<=20?'h2':v<=30?'h3':'h4'}
+function agStr(o){return Object.entries(o).sort((a,b)=>b[1]-a[1]).map(([a,c])=>a+' '+c).join(', ')}
+function draw(){
+  const {days,dates,agents,T}=res;
+  if(!days.length){msg('No calls left after filters.',1);$('out').style.display='none';return}
+  const TI=days.reduce((s,x)=>s+x.tot,0),TN=days.reduce((s,x)=>s+x.nums,0),TC=days.reduce((s,x)=>s+x.calls,0),mx=Math.max(...days.map(x=>x.calls),1),best=days.find(x=>x.calls===mx);
+  $('sx').textContent='Counting directions: '+[...dirSel()].join(', ')+'. Out of '+TI.toLocaleString()+' calls, '+TN+' numbers called '+T+' or more times on the same day. Those numbers made '+TC.toLocaleString()+' calls in total ('+(TC/TI*100).toFixed(1)+'% of all calls).';$('kp').innerHTML=[[TC.toLocaleString(),'Total repeat calls (out of '+TI.toLocaleString()+' calls, '+(TC/TI*100).toFixed(1)+'%)'],[TN,'Numbers that called '+T+' or more times in one day (counted per day)'],[Math.round(TC/days.length),'Repeat calls per day (average)'],[best.calls,'Day with most repeat calls: '+fmt(best.d)]].map(a=>'<div class="box kc"><b>'+a[0]+'</b><span>'+esc(a[1])+'</span></div>').join('');
+  $('dt').innerHTML='<table><tr><th>Date</th><th>Calls</th><th>Repeat numbers</th><th>Repeat calls</th><th>Repeat %</th><th style="width:22%"></th></tr>'+days.map(x=>'<tr><td>'+fmt(x.d)+'</td><td>'+x.tot.toLocaleString()+'</td><td>'+x.nums+'</td><td><b>'+x.calls+'</b></td><td>'+(x.calls/x.tot*100).toFixed(1)+'%</td><td><i style="width:'+(x.calls/mx*100).toFixed(0)+'%"></i></td></tr>').join('')+'<tr class="tt"><td>Total</td><td>'+TI.toLocaleString()+'</td><td>'+TN+'</td><td>'+TC.toLocaleString()+'</td><td>'+(TC/TI*100).toFixed(1)+'%</td><td></td></tr></table>';
+  const al=Object.keys(agents).map(a=>[a,dates.map(d=>agents[a][d]||0)]).map(([a,v])=>[a,v,v.reduce((s,c)=>s+c,0)]).sort((a,b)=>b[2]-a[2]);
+  $('ag').innerHTML='<table><tr><th>Agent</th>'+dates.map(d=>'<th>'+fmt(d).slice(0,5)+'</th>').join('')+'<th>Total</th></tr>'+al.map(([a,v,t])=>'<tr><td>'+esc(a)+'</td>'+v.map(c=>'<td class="'+hc(c)+'">'+c+'</td>').join('')+'<td><b>'+t+'</b></td></tr>').join('')+'<tr class="tt"><td>Total</td>'+days.map(x=>'<td>'+x.calls+'</td>').join('')+'<td>'+TC+'</td></tr></table>';
+  $('nm').innerHTML=days.map(x=>'<details class="box"><summary>'+fmt(x.d)+' — '+x.nums+' numbers, '+x.calls+' calls</summary><div class="sc"><table><tr><th>Number</th><th>Calls</th><th>Agents</th></tr>'+x.list.map(([k,v])=>'<tr><td class="m">'+esc(k)+'</td><td><b>'+v.n+'</b></td><td class="ag">'+esc(agStr(v.ag))+'</td></tr>').join('')+'</table></div></details>').join('');
+  $('t5').innerHTML=days.map(x=>'<div class="box cd"><h3>'+fmt(x.d)+'</h3>'+(x.list.slice(0,5).map(([k,v])=>'<div><span>'+esc(k)+'</span><b>'+v.n+'</b></div>').join('')||'<div><span>No repeat numbers</span></div>')+'</div>').join('');
+  const fq={};days.forEach(x=>x.list.forEach(([k,v])=>{const o=fq[k]||(fq[k]={d:0,c:0});o.d++;o.c+=v.n}));
+  $('mf').innerHTML='<table><tr><th>Number</th><th>Days as repeat</th><th>Total calls</th></tr>'+Object.entries(fq).sort((a,b)=>b[1].c-a[1].c).slice(0,10).map(([k,o])=>'<tr><td class="m">'+esc(k)+'</td><td>'+o.d+'</td><td><b>'+o.c+'</b></td></tr>').join('')+'</table>';
+  const dr={};days.forEach(x=>x.list.forEach(([k,v])=>{for(const q in v.dp)dr[q]=(dr[q]||0)+v.dp[q]}));
+  const dmx=Math.max(...Object.values(dr),1);
+  $('dp').innerHTML='<table><tr><th>Disposition</th><th>Repeat calls</th><th>% of repeat calls</th><th>All calls</th><th>Repeat rate</th><th style="width:20%"></th></tr>'+Object.entries(dr).sort((a,b)=>b[1]-a[1]).map(([q,c])=>'<tr><td style="white-space:normal;min-width:260px">'+esc(q)+'</td><td><b>'+c+'</b></td><td>'+(c/TC*100).toFixed(1)+'%</td><td>'+res.dt[q]+'</td><td>'+(c/res.dt[q]*100).toFixed(1)+'%</td><td><i style="width:'+(c/dmx*100).toFixed(0)+'%"></i></td></tr>').join('')+'</table>';
+  ['ffd','ftd','fcf','fct'].forEach(id=>{$(id).min=dates[0];$(id).max=dates[dates.length-1]});
+  const ds=new Set(),as=new Set();days.forEach(x=>x.list.forEach(([k,v])=>{for(const jk in v.j){const p=jk.split('\u0001');as.add(p[0]);ds.add(p[1])}}));
+  cl('fql',[...ds].sort());fill('fa',[...as].sort().map(v=>[v,v]),'All agents');renderF();buildAD();buildC();renderFCR();renderDash();if(!window._ac){window._ac=1;$('ctl').classList.add('c');$('ctog').textContent='Show data & settings'}
+  $('out').style.display='block';
+}
+function extraSheets(wb){
+  const {days,dates,AC,dt}=res,A=XLSX.utils.aoa_to_sheet,add=(a,n)=>XLSX.utils.book_append_sheet(wb,A(a),n);
+  const fq={};days.forEach(x=>x.list.forEach(([k,v])=>{const o=fq[k]||(fq[k]={d:0,c:0});o.d++;o.c+=v.n}));
+  add([['Number','Days as repeat','Total calls']].concat(Object.entries(fq).sort((a,b)=>b[1].c-a[1].c).slice(0,20).map(([k,o])=>[k,o.d,o.c])),'Top repeat numbers');
+  const dr={},TC=days.reduce((s,x)=>s+x.calls,0);AC.forEach(a=>{dr[a[2]]=(dr[a[2]]||0)+a[4]});
+  add([['Disposition','Repeat calls','% of repeat calls','All calls','Repeat rate %']].concat(Object.entries(dr).sort((a,b)=>b[1]-a[1]).map(([q,c])=>[q,c,+(c/TC*100).toFixed(1),dt[q],+(c/dt[q]*100).toFixed(1)])),'Disposition wise');
+  const piv=(ri,ci,cols,first,fm)=>{const m={};AC.forEach(a=>{const o=m[a[ri]]||(m[a[ri]]={});o[a[ci]]=(o[a[ci]]||0)+a[3]});const R=Object.entries(m).map(([k,o])=>[k].concat(cols.map(c=>o[c]||0))).map(r=>r.concat([r.slice(1).reduce((s,v)=>s+v,0)])).sort((x,y)=>y[y.length-1]-x[x.length-1]);return [[first].concat(cols.map(c=>fm?fm(c):c),['Total'])].concat(R)};
+  [['d','Daily'],['w','Weekly'],['m','Monthly']].forEach(([t,n])=>{const D=fcrData(t),fr=o=>!o||!o.c?'':+((o.c-o.r)/o.c*100).toFixed(1);add([['Agent'].concat(D.ps.map(p=>pl(p,t)),['Total FCR %']),['ALL AGENTS'].concat(D.ps.map(p=>fr(D.P[p])),[fr(fsum(D.P))])].concat(Object.keys(D.A).sort().map(a=>[a].concat(D.ps.map(p=>fr(D.A[a][p])),[fr(fsum(D.A[a]))]))),'FCR '+n)});
+  add(piv(1,0,dates,'Agent',fmt),'Agent calls per date');
+  add(piv(2,0,dates,'Disposition',fmt),'Disposition daily count');
+  add(piv(1,2,[...new Set(AC.map(a=>a[2]))].sort(),'Agent'),'Agent x Disposition');
+  add([['Date','Agent','Disposition','Direction','Calls']].concat(res.RA.slice().sort((a,b)=>a[0]<b[0]?-1:a[0]>b[0]?1:0).map(a=>[fmt(a[0]),a[1],a[2],a[3],a[4]])),'All imported calls');
+  add([['Date','Agent','Disposition','All calls','Repeat calls']].concat(AC.slice().sort((a,b)=>a[0]<b[0]?-1:a[0]>b[0]?1:0).map(a=>[fmt(a[0]),a[1],a[2],a[3],a[4]])),'Agent-Date-Disposition');
+}
+function fcrSheet(t,title){
+  const D=fcrData(t),T=res.T,A=[],F=(f,v,z)=>({t:'n',f:f,v:v,z:z||'#,##0'}),E=c=>XLSX.utils.encode_col(c);
+  A.push([title]);A.push(['Inbound calls. Repeat number = '+T+'+ calls from the same number within the period. FCR % = (Calls - Repeat calls) / Calls.']);A.push([]);
+  A.push(['Period','Calls','Repeat calls','FCR %']);
+  const r0=A.length+1;
+  D.ps.forEach((p,k)=>{const o=D.P[p],r=r0+k;A.push([pl(p,t),o.c,o.r,F('IF(B'+r+'=0,"",(B'+r+'-C'+r+')/B'+r+')',(o.c-o.r)/o.c,'0.0%')])});
+  const r1=r0+D.ps.length-1,tr=r1+1,S=fsum(D.P);
+  A.push(['Total',F('SUM(B'+r0+':B'+r1+')',S.c),F('SUM(C'+r0+':C'+r1+')',S.r),F('IF(B'+tr+'=0,"",(B'+tr+'-C'+tr+')/B'+tr+')',(S.c-S.r)/S.c,'0.0%')]);
+  A.push([]);A.push(['Agent wise FCR']);
+  const h=['Agent'];D.ps.forEach(p=>h.push(pl(p,t)+' - Calls',pl(p,t)+' - Repeat',pl(p,t)+' - FCR %'));h.push('Overall - Calls','Overall - Repeat','Overall - FCR %');A.push(h);
+  const ags=Object.keys(D.A).sort((a,b)=>fsum(D.A[b]).c-fsum(D.A[a]).c),a0=A.length+1,oc=1+D.ps.length*3,tot=[];
+  ags.forEach((a,k)=>{const r=a0+k,row=[a],cs=[],rs=[];
+    D.ps.forEach((p,j)=>{const o=D.A[a][p]||{c:0,r:0},c=1+j*3,C=E(c),R=E(c+1);row.push(o.c,o.r,F('IF('+C+r+'=0,"",('+C+r+'-'+R+r+')/'+C+r+')',o.c?(o.c-o.r)/o.c:0,'0.0%'));cs.push(C+r);rs.push(R+r);tot[c]=(tot[c]||0)+o.c;tot[c+1]=(tot[c+1]||0)+o.r});
+    const s=fsum(D.A[a]),OC=E(oc),OR=E(oc+1);
+    row.push(F(cs.join('+'),s.c),F(rs.join('+'),s.r),F('IF('+OC+r+'=0,"",('+OC+r+'-'+OR+r+')/'+OC+r+')',(s.c-s.r)/s.c,'0.0%'));
+    tot[oc]=(tot[oc]||0)+s.c;tot[oc+1]=(tot[oc+1]||0)+s.r;A.push(row)});
+  const a1=a0+ags.length-1,ta=a1+1,lastRow=['All agents'];
+  for(let c=1;c<=oc+2;c++){const C=E(c);if((c-1)%3===2){const x=E(c-2),y=E(c-1);lastRow.push(F('IF('+x+ta+'=0,"",('+x+ta+'-'+y+ta+')/'+x+ta+')',tot[c-2]?(tot[c-2]-tot[c-1])/tot[c-2]:0,'0.0%'))}else lastRow.push(F('SUM('+C+a0+':'+C+a1+')',tot[c]||0))}
+  A.push(lastRow);
+  const ws=XLSX.utils.aoa_to_sheet(A);ws['!cols']=[{wch:34}].concat(Array(oc+2).fill({wch:13}));
+  return {ws,tr,r0,S,D};
+}
+async function exportFCR(){
+  if(!res)return;
+  let dl=await getDl();
+  if(!dl){$('cpm').textContent='Direct download is not available in this view. Open this page in its own browser tab (not inside a chat) and try again.';return}
+  const SD=fcrSheet('d','FCR % - Daily trend'),SW=fcrSheet('w','FCR % - Weekly analysis'),SM=fcrSheet('m','FCR % - Monthly analysis'),ST=fcrSheet('t','FCR % - 3-Day Cycle analysis'),F=(f,v,z)=>({t:'n',f:f,v:v,z:z||'#,##0'}),dts=res.dates;
+  const S=[['FairFirst Insurance - FNOL Contact Centre'],['First Call Resolution (FCR) analysis - weekly and monthly'],['Data period: '+fmt(dts[0])+' - '+fmt(dts[dts.length-1])+'. Repeat number = '+res.T+'+ calls from the same number within the period.'],[],['FCR % by time window'],['Window','Calls','Repeat calls','FCR %']];
+  [['Daily (each day on its own)','FCR Daily',SD],['Weekly (Mon-Sun)','FCR Weekly',SW],['Monthly','FCR Monthly',SM],['3-Day Cycle','FCR 3-Day Cycle',ST]].forEach(([n,sh,x])=>S.push([n,F("'"+sh+"'!B"+x.tr,x.S.c),F("'"+sh+"'!C"+x.tr,x.S.r),F("'"+sh+"'!D"+x.tr,(x.S.c-x.S.r)/x.S.c,'0.0%')]));
+  S.push([],['Weekly FCR %'],['Week','Calls','Repeat calls','FCR %']);
+  SW.D.ps.forEach((p,k)=>{const r=SW.r0+k,o=SW.D.P[p];S.push([pl(p,'w'),F("'FCR Weekly'!B"+r,o.c),F("'FCR Weekly'!C"+r,o.r),F("'FCR Weekly'!D"+r,(o.c-o.r)/o.c,'0.0%')])});
+  const ag=Object.entries(SW.D.A).map(([a,g])=>{const s=fsum(g);return [a,s.c,s.r,(s.c-s.r)/s.c]}).filter(x=>x[1]>=100).sort((a,b)=>a[3]-b[3]);
+  const pr=x=>S.push([x[0],x[1],x[2],{t:'n',v:x[3],z:'0.0%'}]);
+  S.push([],['Lowest FCR agents (100+ calls, weekly basis)'],['Agent','Calls','Repeat calls','FCR %']);ag.slice(0,5).forEach(pr);
+  S.push([],['Highest FCR agents (100+ calls, weekly basis)'],['Agent','Calls','Repeat calls','FCR %']);ag.slice(-5).reverse().forEach(pr);
+  S.push([],['How FCR is calculated'],['FCR % = (Calls - Repeat calls) / Calls.'],['Repeat calls = all calls from numbers that called the minimum number of times or more within the same day, week or month.'],['Calls counted follow the page settings (default: inbound calls only, excluded numbers removed).'],['Weekly = Monday to Sunday. Weeks or months with only some days uploaded are partial periods.'],['A higher FCR % is better. This measures repeat contact, not confirmed resolution.']);
+  const ss=XLSX.utils.aoa_to_sheet(S);ss['!cols']=[{wch:60},{wch:14},{wch:14},{wch:12}];
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ss,'Summary');XLSX.utils.book_append_sheet(wb,SW.ws,'FCR Weekly');XLSX.utils.book_append_sheet(wb,SM.ws,'FCR Monthly');XLSX.utils.book_append_sheet(wb,ST.ws,'FCR 3-Day Cycle');XLSX.utils.book_append_sheet(wb,SD.ws,'FCR Daily');
+  const buf=XLSX.write(wb,{bookType:'xlsx',type:'array'});
+  try{await dl.save({filename:'FCR_Report_'+fmt(dts[0]).replace(/\./g,'')+'-'+fmt(dts[dts.length-1]).replace(/\./g,'')+'.xlsx',data:new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})})}catch(e){if(!e||e.code!=='declined')msg('Could not save the file ('+((e&&e.code)||'error')+').',1)}
+}
+function fcrTsv(){
+  const out=[],T=res.T;
+  out.push('FCR REPORT\tRepeat = '+T+'+ calls from the same number within the period. FCR % = (Calls - Repeat) / Calls');out.push('');
+  [['d','DAILY'],['w','WEEKLY (Mon-Sun)'],['m','MONTHLY'],['t','3-DAY CYCLE']].forEach(([t,n])=>{
+    const D=fcrData(t),S=fsum(D.P),pc=o=>o.c?((o.c-o.r)/o.c*100).toFixed(1)+'%':'';
+    out.push(n+' - TOTAL');out.push(['Period','Calls','Repeat calls','FCR %'].join('\t'));
+    D.ps.forEach(p=>out.push([pl(p,t),D.P[p].c,D.P[p].r,pc(D.P[p])].join('\t')));
+    out.push(['Total',S.c,S.r,pc(S)].join('\t'));out.push('');
+    out.push(n+' - AGENT WISE');out.push(['Agent'].concat(D.ps.flatMap(p=>[pl(p,t)+' Calls',pl(p,t)+' Repeat',pl(p,t)+' FCR %']),['Overall Calls','Overall Repeat','Overall FCR %']).join('\t'));
+    Object.keys(D.A).sort((a,b)=>fsum(D.A[b]).c-fsum(D.A[a]).c).forEach(a=>{const s=fsum(D.A[a]);out.push([a].concat(D.ps.flatMap(p=>{const o=D.A[a][p]||{c:0,r:0};return [o.c,o.r,pc(o)]}),[s.c,s.r,pc(s)]).join('\t'))});
+    out.push('');
+  });
+  return out.join('\n');
+}
+async function getDl(){
+  try{const d=await window.claude.use('downloads');if(d)return d}catch(e){}
+  if(!window.claude)return {save:async({filename,data})=>{const a=document.createElement('a');a.href=URL.createObjectURL(data instanceof Blob?data:new Blob([data]));a.download=filename;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);return {status:'saved'}}};
+  return null;
+}
+async function exportXl(){
+  let dl=await getDl();
+  if(!dl){msg('Direct download is not available in this view. Open this page in its own browser tab and try again.',1);return}
+  const {days,dates,agents}=res,wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([['Date','Calls','Repeat numbers','Repeat calls','Repeat %']].concat(days.map(x=>[fmt(x.d),x.tot,x.nums,x.calls,+(x.calls/x.tot*100).toFixed(1)]))),'Date wise');
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([['Agent'].concat(dates.map(fmt),['Total'])].concat(Object.keys(agents).map(a=>{const v=dates.map(d=>agents[a][d]||0);return [a].concat(v,[v.reduce((s,c)=>s+c,0)])}))),'Agent wise');
+  const nr=[['Date','Number','Calls','Agents']];days.forEach(x=>x.list.forEach(([k,v])=>nr.push([fmt(x.d),k,v.n,agStr(v.ag)])));
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(nr),'Number wise');extraSheets(wb);
+  const buf=XLSX.write(wb,{bookType:'xlsx',type:'array'});
+  try{await dl.save({filename:'Repeat_Call_Report_'+fmt(dates[0]).replace(/\./g,'')+'-'+fmt(dates[dates.length-1]).replace(/\./g,'')+'.xlsx',data:new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})})}catch(e){if(!e||e.code!=='declined')msg('Could not save the file ('+((e&&e.code)||'error')+').',1)}
+}
+function tsv(){const {days,dates,agents}=res;const L=[['DATE WISE'],['Date','Calls','Repeat numbers','Repeat calls','Repeat %']];days.forEach(x=>L.push([fmt(x.d),x.tot,x.nums,x.calls,(x.calls/x.tot*100).toFixed(1)]));L.push([],['AGENT WISE'],['Agent'].concat(dates.map(fmt),['Total']));Object.keys(agents).forEach(a=>{const v=dates.map(d=>agents[a][d]||0);L.push([a].concat(v,[v.reduce((s,c)=>s+c,0)]))});L.push([],['NUMBER WISE'],['Date','Number','Calls','Agents']);days.forEach(x=>x.list.forEach(([k,v])=>L.push([fmt(x.d),'="'+k+'"',v.n,agStr(v.ag)])));return L.map(r=>r.join('\t')).join('\n')}
+
+$('pick').onclick=()=>$('f').click();
+$('f').onchange=e=>{load([...e.target.files]);e.target.value=''};
+$('go').onclick=run;['ffd','ftd','fa'].forEach(i=>$(i).onchange=renderF);$('fql').onchange=renderF;$('fqs').oninput=()=>{const q=$('fqs').value.toLowerCase();document.querySelectorAll('#fql label').forEach(l=>{l.style.display=l.textContent.toLowerCase().includes(q)?'':'none'})};['adf','adt','aa','as'].forEach(i=>$(i).onchange=renderAD);$('dl').onchange=renderAD;['cql','cal'].forEach(i=>$(i).onchange=renderC);['cdf','cdt'].forEach(i=>$(i).onchange=renderC);$('cdr').onchange=renderC;document.addEventListener('click',e=>{const b=e.target.closest('.ca');if(b){document.querySelectorAll('#'+b.dataset.t+' input').forEach(i=>{if(i.parentElement.style.display!=='none')i.checked=b.dataset.v==='1'});(b.dataset.t==='fql'?renderF:renderC)()}});$('dall').onclick=()=>{document.querySelectorAll('#dl input').forEach(i=>{if(i.parentElement.style.display!=='none')i.checked=true});renderAD()};$('dclr').onclick=()=>{document.querySelectorAll('#dl input').forEach(i=>{if(i.parentElement.style.display!=='none')i.checked=false});renderAD()};$('dqs').oninput=()=>{const q=$('dqs').value.toLowerCase();document.querySelectorAll('#dl label').forEach(l=>{l.style.display=l.textContent.toLowerCase().includes(q)?'':'none'})};$('xl').onclick=exportXl;$('xf').onclick=exportFCR;['fp','fv','fcf','fct'].forEach(i=>$(i).onchange=renderFCR);
+$('clr').onclick=()=>{if(DB){PEND=[];names=[];$('sv').style.display='none';msg('')}else{rows=[];names=[];res=null;$('out').style.display='none';msg('')}};
+const PS=[...document.querySelectorAll('.pg')],TB=[];
+function show(i){PS.forEach((p,j)=>p.classList.toggle('on',i===j));TB.forEach((b,j)=>b.classList.toggle('on',i===j));if(typeof GOF!=='undefined'&&GOF[i]!=null)openG(GOF[i])}
+const GR=[['OVERVIEW',['Dashboard','Summary']],['REPEAT ANALYSIS',['Date wise','Agent wise','Number wise','Disposition wise']],['PERFORMANCE',['FCR']],['EXPLORE & FILTER',['Filter','Agent calls','All imported calls','All numbers']]];
+const LB={'Dashboard':'Dashboard','Summary':'Executive Summary','Date wise':'Daily Trend','Agent wise':'Agent Performance','Number wise':'Repeat Numbers','Disposition wise':'Disposition Analysis','FCR':'FCR Analysis','Filter':'Repeat Drill-down','Agent calls':'Agent × Disposition','All imported calls':'All Calls Explorer','All numbers':'Repeat Number Details'},IX={};
+PS.forEach((p,i)=>{IX[p.dataset.t]=i});
+const GH=[],GS=[],GOF={};
+function openG(k){GH.forEach((h,j)=>{h.classList.toggle('open',j===k);GS[j].classList.toggle('open',j===k)})}
+GR.forEach(([g,ns],k)=>{const h=document.createElement('button');h.className='ng';h.innerHTML=esc(g)+'<i>\u203a</i>';const sb=document.createElement('div');sb.className='sub';
+  h.onclick=()=>openG(sb.classList.contains('open')?-1:k);
+  ns.forEach(n=>{const i=IX[n];if(i==null)return;GOF[i]=k;const b=document.createElement('button');b.className='nb';b.textContent=LB[n]||n;b.onclick=()=>{show(i);const y=$('out').getBoundingClientRect().top+window.scrollY-$('top').offsetHeight-8;window.scrollTo({top:Math.max(0,y),behavior:'smooth'})};sb.appendChild(b);TB[i]=b});
+  $('tabs').appendChild(h);$('tabs').appendChild(sb);GH.push(h);GS.push(sb)});
+show(0);
+const TOPE=$('top'),updTop=()=>document.documentElement.style.setProperty('--topH',TOPE.offsetHeight+'px');
+try{new ResizeObserver(updTop).observe(TOPE)}catch(e){}updTop();
+$('ctog').onclick=()=>{const c=$('ctl').classList.toggle('c');$('ctog').textContent=c?'Show data & settings':'Hide data & settings'};
+$('out').classList.add('nd');new MutationObserver(()=>$('out').classList.toggle('nd',$('out').style.display!=='block')).observe($('out'),{attributes:true,attributeFilter:['style']});
+$('lc').onclick=()=>{rows=PEND.slice();PEND=[];names=[];$('sv').style.display='none';$('lc').style.display='none';msg('Analysing on this device only. This data is not saved to the system.');run()};
+$('sv').onclick=saveAll;
+$('dfrom').onchange=$('dto').onchange=()=>{if(rows.length)run()};
+$('dcl').onclick=()=>{$('dfrom').value='';$('dto').value='';if(rows.length)run()};
+['thr','ex','short'].forEach(i=>$(i).onchange=()=>{if(rows.length)run()});$('dirs').onchange=()=>{if(rows.length)run()};
+$('ddel').onclick=async()=>{const d=$('dsel').value,b=$('ddel');if(!d||!DB)return;if(b.dataset.c!==d){b.dataset.c=d;b.textContent='Click again to delete '+fmt(d);return}
+  try{await DB.doc('calls/'+d).delete();msg('Deleted '+fmt(d)+'.')}catch(e){msg('Could not delete ('+((e&&e.code)||'error')+').',1)}b.dataset.c='';b.textContent='Delete this date'};
+(async()=>{
+  let u=null;try{u=await window.claude.use('user')}catch(e){}
+  let ce=false,cw=null;try{ce=u?await u.canEdit():false}catch(e){}try{cw=u?await u.can('data.write'):null}catch(e){}ADMIN=!!u&&(ce||cw!==false);
+  let nm='';try{const m=u?await u.me():null;nm=(m&&m.name)||''}catch(e){}
+  $('role').textContent=(nm?nm+' \u00b7 ':'')+(!u?'Not signed in':ADMIN?'Admin':'Agent (view only)');$('role').className='chip'+(ADMIN?' ad':'');
+  try{DB=await window.claude.use('db')}catch(e){DB=null}
+  $('drop').style.display='block';$('admp').style.display='block';if(!ADMIN){$('dsel').style.display='none';$('ddel').style.display='none'}$('dg').textContent='Access: '+(!u?'not signed in':ADMIN?'admin':'view only')+' \u00b7 shared database: '+(DB?'connected':'unavailable')+(!DB&&u?' (uploads work on this device only)':'');
+  if(DB){DB.collection('calls').onSnapshot(fromSnap,e=>msg('Could not load the data ('+((e&&e.code)||'error')+').',1))}
+  else if(!ADMIN&&window.claude){msg('Data is not available in this view. Please sign in and reopen the page.',1)}
+})();
+const dz=$('drop');
+['dragover','dragenter'].forEach(t=>dz.addEventListener(t,e=>{e.preventDefault();dz.classList.add('on')}));
+['dragleave','drop'].forEach(t=>dz.addEventListener(t,e=>{e.preventDefault();dz.classList.remove('on')}));
+dz.addEventListener('drop',e=>load([...e.dataTransfer.files]));
+</script></body></html>
